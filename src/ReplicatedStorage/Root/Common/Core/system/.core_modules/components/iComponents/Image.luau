@@ -3,7 +3,6 @@ local core_modules = components.Parent
 local util57 = core_modules.Parent["util-57"]
 
 local Core = core_modules.Parent.Parent
-local data = Core.data
 
 local Util = require(util57.UI.FusionUtils)
 local Fusion = require(core_modules.Fusion)
@@ -14,14 +13,28 @@ local InnerScope = Fusion.innerScope
 
 local Themer = require(core_modules.themer)
 local Base = require(script.Parent.Base)
-local Frame = require(script.Parent.Frame)
 
 local Components = {
-	Frame = Frame
+	Base = Base,
 }
 
-export type Props = Base.Props & {}
+--[=[
+		@within Image
+		@interface ImageProps
 
+		@field ... BaseProps
+		@field Image Fusion.UsedAs<string>?
+		@field FallbackImage Fusion.UsedAs<string>?
+		@field ImageColor3 Fusion.UsedAs<Color3>?
+		@field ImageTransparency Fusion.UsedAs<number>?
+		@field ImageRectOffset Fusion.UsedAs<Vector2>?
+		@field ImageRectSize Fusion.UsedAs<Vector2>?
+		@field ResampleMode Fusion.UsedAs<Enum.ResamplerMode>?
+		@field ScaleType Fusion.UsedAs<Enum.ScaleType>?
+		@field SliceCenter Fusion.UsedAs<Rect>?
+		@field SliceScale Fusion.UsedAs<number>?
+		@field TileSize Fusion.UsedAs<UDim2>?
+]=]
 return function(Scope: Fusion.Scope<any>, Props: Props)
 	local Scope = InnerScope(Scope, Fusion, Util, Components)
 

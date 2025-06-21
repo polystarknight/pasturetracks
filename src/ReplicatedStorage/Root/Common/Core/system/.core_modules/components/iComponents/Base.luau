@@ -15,7 +15,6 @@ local Common = Root.Common
 local Core = Common.Core
 
 local system = Core.system
-local data = Core.data
 
 local core_modules = system[".core_modules"]
 local util57 = system["util-57"]

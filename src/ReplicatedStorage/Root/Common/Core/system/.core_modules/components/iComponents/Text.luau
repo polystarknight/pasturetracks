@@ -14,10 +14,9 @@ local InnerScope = Fusion.innerScope
 
 local Themer = require(core_modules.themer)
 local Base = require(script.Parent.Base)
-local Frame = require(script.Parent.Frame)
 
 local Components = {
-	Frame = Frame
+	Base = Base,
 }
 
 export type Props = Base.Props & {}
@@ -56,6 +55,7 @@ return function(Scope: Fusion.Scope<any>, Props: Props): Instance
 
 		Text = Props.Text,
 		TextTransparency = Props.TextTransparency,
+		TextStrokeTransparency = Props.TextStrokeTransparency,
 		MaxVisibleGraphemes = Props.MaxVisibleGraphemes,
 		LocalizedText = Props.LocalizedText,
 		LineHeight = Props.LineHeight,

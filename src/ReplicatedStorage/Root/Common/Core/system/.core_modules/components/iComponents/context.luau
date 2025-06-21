@@ -9,6 +9,7 @@ local index = {
 	MenuButtonChip = require(components.MenuButtonChip),
 	IconText = require(components.IconText),
 	Titlebar = require(components.Titlebar),
+	PageContext = require(components.PageContext),
 }
 
 return index

@@ -46,7 +46,7 @@ local function NewTheme(Scope: Fusion.Scope<any>, ThemeSpec)
 				Contrast = Scope:Value(nil),
 			},
 			Secondary = {
-				Main = Scope:Value(colors.Black),
+				Main = Scope:Value(Color3.fromHex("83bf8d")),
 				Dark = Scope:Value(nil),
 				Light = Scope:Value(nil),
 				Contrast = Scope:Value(nil),
@@ -171,6 +171,7 @@ local function NewTheme(Scope: Fusion.Scope<any>, ThemeSpec)
 			Full = Scope:Value(nil),
 		},
 		StrokeThickness = {
+			One = Scope:Value(1),
 			Base = Scope:Value(2),
 			["0"] = Scope:Value(0),
 			["1"] = Scope:Value(nil),

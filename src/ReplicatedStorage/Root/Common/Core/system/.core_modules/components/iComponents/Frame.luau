@@ -28,21 +28,11 @@ return function(Scope: Fusion.Scope<any>, Props: Props)
 	local Scope = InnerScope(Scope, Fusion, Components)
 	
 	local Style = Props.Style
-	
+
 	local Frame = Scope:Base(Util.CombineProps(Props, {
 		ClassName = "Frame",
 		Name = "Frame",
 		BackgroundTransparency = 1,
-		
-		[Children] = {
-			Scope:Computed(function(Use)
-				if Use(Props.Style) == "Aero" then
-					return Scope:Hydrate(data.cabinet.Backdrop:Clone()) {}
-				else
-					return
-				end
-			end)
-		}
 	}))
 
 	

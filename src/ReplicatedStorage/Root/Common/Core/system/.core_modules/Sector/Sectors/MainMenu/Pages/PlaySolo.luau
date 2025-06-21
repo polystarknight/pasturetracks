@@ -2,7 +2,8 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local user = Players.LocalPlayer
 
-local Sector = script.Parent
+local Sector = script.Parent.Parent
+local SectorComponents = Sector.Components
 
 local Root = ReplicatedStorage:FindFirstChild("Root")
 local Common = Root.Common
@@ -19,12 +20,24 @@ local New = Fusion.New
 local Child = Fusion.Child
 local Children = Fusion.Children
 local InnerScope = Fusion.innerScope
+local Peek = Fusion.peek
 
-local IComponents = require(core_modules.components.iComponents.context)
+local IComponents = core_modules.components.iComponents
 local Themer = require(core_modules.themer)
+local Document = require(IComponents.Document)
+local MenuButton = require(SectorComponents.MenuButton)
+local PageContext = require(IComponents.PageContext)
+
+local Context = require(Sector.Context)
+
+local Components = {
+	Document = Document,
+	MenuButton = MenuButton,
+	PageContext = PageContext
+}
 
 return function(Scope: Fusion.Scope<any>, Props: Props): Instance
-	local Scope = InnerScope(Scope, Fusion, Util, IComponents)
+	local Scope = InnerScope(Scope, Fusion, Util, Components)
 	local Theme = Themer.Theme:now()
 
 	return Scope:Document {
@@ -43,7 +56,7 @@ return function(Scope: Fusion.Scope<any>, Props: Props): Instance
 			Scope:MenuButton {
 				Content = { "rbxassetid://0", "White" },
 				OnMouseButton1Down = function()
-					warn("Override")
+					Context.mapSelectorIsPeeking:set(not Peek(Context.mapSelectorIsPeeking))
 				end,
 			},
 			Scope:MenuButton {
@@ -78,7 +91,10 @@ return function(Scope: Fusion.Scope<any>, Props: Props): Instance
 			Scope:MenuButton {
 				Content = { "rbxassetid://0", "Back" },
 				ContentImageColor = Color3.fromRGB(255, 255, 255),
-				OnMouseButton1Down = Props.OnBack,
+				OnMouseButton1Down = Props.OnBack and function()
+					Props.OnBack()
+					Context.mapSelectorIsPeeking:set(false)
+				end,
 			},
 		}
 	}
