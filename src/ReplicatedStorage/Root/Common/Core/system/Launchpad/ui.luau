@@ -15,7 +15,6 @@ local core_modules = system[".core_modules"]
 local util57 = system["util-57"]
 local Components = core_modules.components
 
-
 local color = require(util57.color.tailwind)
 local IComponents = require(Components.iComponents.context)
 local Fusion = require(core_modules.Fusion)
@@ -31,7 +30,7 @@ local Sectors = require(core_modules.Sector.Sectors)
 local self = {}
 
 function self.start()
-	draw(1)
+	draw(0)
 end
 
 local function getScene()
@@ -43,17 +42,20 @@ local function getScene()
 		Enabled = true,
 		IgnoreGuiInset = true,
 	}
-	
-	
 end
 
 function draw(level: number)
+	local humanServices = shared.humanitarianServices
+	local human = humanServices.new()
+	
 	if level == 0 then
+		human:defer(function()
+			warn("UI draw level 0")	
+		end)
+		
 		return
 	end
 	
-	local humanServices = shared.humanitarianServices
-	local human = humanServices.new()
 	local scope = InnerScope(FusionScope, Fusion, Sectors)
 	local scene = getScene()
 	
