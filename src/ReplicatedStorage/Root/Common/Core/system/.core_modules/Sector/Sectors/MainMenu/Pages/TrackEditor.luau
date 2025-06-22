@@ -2,7 +2,8 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local user = Players.LocalPlayer
 
-local Sector = script.Parent
+local Sector = script.Parent.Parent
+local SectorComponents = Sector.Components
 
 local Root = ReplicatedStorage:FindFirstChild("Root")
 local Common = Root.Common
@@ -19,24 +20,32 @@ local New = Fusion.New
 local Child = Fusion.Child
 local Children = Fusion.Children
 local InnerScope = Fusion.innerScope
+local Peek = Fusion.peek
 
-local IComponents = require(core_modules.components.iComponents.context)
+local IComponents = core_modules.components.iComponents
 local Themer = require(core_modules.themer)
+local Document = require(IComponents.Document)
+local MenuButton = require(SectorComponents.MenuButton)
+local PageContext = require(IComponents.PageContext)
+
+local Context = require(Sector.Context)
+
+local Components = {
+	Document = Document,
+	MenuButton = MenuButton,
+	PageContext = PageContext
+}
 
 return function(Scope: Fusion.Scope<any>, Props: Props): Instance
-	local Scope = InnerScope(Scope, Fusion, Util, IComponents)
+	local Scope = InnerScope(Scope, Fusion, Util, Components)
 	local Theme = Themer.Theme:now()
-	
-	local OnNext = Util.Fallback(Props.OnNext, function() 
-		print("No pages provided")
-	end)
-	
+
 	return Scope:Document {
-		Name = "LandingPage",
+		Name = "TrackEditorPage",
 		Size = Theme.ObjectSize.FitToScale,
 		Visible = Props.Visible,
-		ListPadding = UDim.new(0, 15),
 		ListEnabled = true,
+		ListPadding = UDim.new(0, 15),
 		PaddingBottom = UDim.new(0, 15),
 		PaddingLeft = UDim.new(0, 10),
 		PaddingRight = UDim.new(0, 10),
@@ -45,15 +54,16 @@ return function(Scope: Fusion.Scope<any>, Props: Props): Instance
 
 		[Children] = {
 			Scope:MenuButton {
-				Content = { "rbxassetid://0", "Play Solo" },
+				Content = { "rbxassetid://0", "New Track" },
 				OnMouseButton1Down = function()
-					OnNext("PlaySolo")
+					shared.TrackEditor.newSession()
+                    --Context.mapSelectorIsPeeking:set(not Peek(Context.mapSelectorIsPeeking))
 				end,
 			},
-			Scope:MenuButton {
-				Content = { "rbxassetid://0", "Track Editor" },
+            Scope:MenuButton {
+				Content = { "rbxassetid://0", "Load Track" },
 				OnMouseButton1Down = function()
-					OnNext("TrackEditor")
+					
 				end,
 			},
 			Scope:Document {
@@ -62,10 +72,11 @@ return function(Scope: Fusion.Scope<any>, Props: Props): Instance
 				Size = Theme.ObjectSize.FitToScale,
 			},
 			Scope:MenuButton {
-				Content = { "rbxassetid://0", "Quit" },
+				Content = { "rbxassetid://0", "Back" },
 				ContentImageColor = Color3.fromRGB(255, 255, 255),
-				OnMouseButton1Down = function()
-					user:Kick()
+				OnMouseButton1Down = Props.OnBack and function()
+					Props.OnBack()
+					Context.mapSelectorIsPeeking:set(false)
 				end,
 			},
 		}

@@ -14,6 +14,7 @@ local data = Core.data
 local core_modules = system[".core_modules"]
 local util57 = system["util-57"]
 
+local class = require(util57._class)
 local colors = require(util57.color.tailwind)
 local Themer = require(core_modules.themer)
 
@@ -28,14 +29,25 @@ local IComponents = require(core_modules.components.iComponents.context)
 local MenuComponents = require(script.Parent.Components)
 local Context = require(script.Parent.Context)
 
-local MainMenu = {}
+local MainMenu = class()
 
-function MainMenu.Init()
-	
+function MainMenu:ctor()
+	self.scene = nil
 end
 
-function MainMenu.Start(Scope: Fusion.Scope<any>, scene)
+function MainMenu.Start(self, Scope: Fusion.Scope<any>, scene)
+	self.scene = scene
 	MainMenu.DrawTabCenter(Scope, { Parent = scene })
+end
+
+function MainMenu.Stop(self, Scope: Fusion.Scope<any>)
+	local scene = self.scene
+	if scene == nil then
+		return
+	end
+
+	self.scene:Destroy()
+	Scope:doCleanup()
 end
 
 function MainMenu.DrawTabCenter(Scope: Fusion.Scope<any>, Props)

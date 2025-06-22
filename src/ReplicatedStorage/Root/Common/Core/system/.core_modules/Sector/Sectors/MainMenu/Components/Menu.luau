@@ -23,7 +23,7 @@ return function(Scope: Fusion.Scope<any>, Props)
 	local Scope = InnerScope(Scope, Fusion, IComponents)
     local Theme = Themer.Theme:now()
 
-    local currentPage = Scope:Value("Home" :: "PlaySolo" | "Profile")
+    local currentPage = Scope:Value("Home")
 	local pageHistoryStack = Scope:Value({})
 	local currentPageLabel = Scope:Value(nil)
 	
@@ -51,16 +51,22 @@ return function(Scope: Fusion.Scope<any>, Props)
 
 	local pageContents = Scope:Computed(function(Use)
 		local page = Use(currentPage)
-		if (page == "Home") then
+		if page == "Home" then
 			currentPageLabel:set({ "Welcome!" })
 			return Scope:HomePage { 
 				Visible = Use(currentPage) == "Home",
 				OnNext = goToPage,
 			}
-		elseif (page == "PlaySolo")  then
+		elseif page == "PlaySolo"  then
 			currentPageLabel:set({ "Play Solo" })
 			return Scope:PlaySolo { 
 				Visible = Use(currentPage) == "PlaySolo",
+				OnBack = goBack
+			}
+		elseif page == "TrackEditor"  then
+			currentPageLabel:set({ "Track Editor" })
+			return Scope:TrackEditor { 
+				Visible = Use(currentPage) == "TrackEditor",
 				OnBack = goBack
 			}
 		else

@@ -52,4 +52,4 @@ type humanData = {
 }
 export type human = setmetatable<humanData, typeof(human)>
 
-return human
+return human.new()

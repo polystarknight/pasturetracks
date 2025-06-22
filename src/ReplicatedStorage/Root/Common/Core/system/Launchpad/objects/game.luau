@@ -16,7 +16,7 @@ function module:ctor(): gameTask
 	self.start = function()
 		--shared.Task.OnTick:Connect(OnTick, "asd")
 		--shared.Task:Delay(8, OnDelay)
-		--shared.Task:Start(workspace:GetServerTimeNow())
+		shared.Task:Start(workspace:GetServerTimeNow())
 	end
 end
 

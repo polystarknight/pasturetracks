@@ -11,7 +11,7 @@ local util57 = system["util-57"]
 
 local scene = data.models.Earth:Clone()
 scene.Parent = workspace
-scene.Orbit.Enabled = true
+scene.Orbit.Enabled = false
 
 return {
 	

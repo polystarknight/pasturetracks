@@ -7,6 +7,7 @@ local MenuComponents = {
 	MenuButton = require(script.MenuButton),
 	HomePage = require(Pages.Home),
 	PlaySolo = require(Pages.PlaySolo),
+	TrackEditor = require(Pages.TrackEditor),
 }
 
 return MenuComponents

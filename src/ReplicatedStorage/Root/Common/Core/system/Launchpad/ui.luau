@@ -27,10 +27,16 @@ local InnerScope = Fusion.innerScope
 local PlayerGui: BasePlayerGui = user:FindFirstChildOfClass("PlayerGui")
 local Sectors = require(core_modules.Sector.Sectors)
 
+
+
 local self = {}
 
 function self.start()
-	draw(0)
+	draw(1)
+end
+
+function self.Stop()
+	draw(-1)
 end
 
 local function getScene()
@@ -45,9 +51,10 @@ local function getScene()
 end
 
 function draw(level: number)
-	local humanServices = shared.humanitarianServices
-	local human = humanServices.new()
-	
+	local human = shared.humanitarianServices
+	local scope = InnerScope(FusionScope, Fusion, Sectors)
+	local scene = getScene()
+
 	if level == 0 then
 		human:defer(function()
 			warn("UI draw level 0")	
@@ -55,12 +62,16 @@ function draw(level: number)
 		
 		return
 	end
-	
-	local scope = InnerScope(FusionScope, Fusion, Sectors)
-	local scene = getScene()
+
+	if level == -1 then
+		warn("UI draw level -1")
+		scope.MainMenu:Stop(scope)
+		return 
+	end
 	
 	human:defer(function()
-		scope.MainMenu.Start(scope, scene)
+		scene.Enabled = true
+		scope.MainMenu:Start(scope, scene)
 	end)
 	
 	return 0
