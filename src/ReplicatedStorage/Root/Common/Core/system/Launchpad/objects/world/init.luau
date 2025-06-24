@@ -9,9 +9,9 @@ local data = Core.data
 local core_modules = system[".core_modules"]
 local util57 = system["util-57"]
 
-local scene = data.models.Earth:Clone()
+--[[local scene = data.models.Earth:Clone()
 scene.Parent = workspace
-scene.Orbit.Enabled = false
+scene.Orbit.Enabled = false]]
 
 return {
 	

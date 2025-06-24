@@ -1,0 +1,3 @@
+return {
+    defaultFOV = 70
+}

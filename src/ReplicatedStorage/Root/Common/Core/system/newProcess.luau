@@ -31,6 +31,9 @@ function process.launch(self: typeof(process.new()))
 	end
 	
 	for _, module in shared do
+		if module == nil then continue end
+		if type(module) == "function" then continue end
+
 		if type(module.init) == "function" then 
 			module.init() 
 		end

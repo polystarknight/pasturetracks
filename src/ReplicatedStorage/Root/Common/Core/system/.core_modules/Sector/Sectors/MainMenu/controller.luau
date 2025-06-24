@@ -33,28 +33,35 @@ local MainMenu = class()
 
 function MainMenu:ctor()
 	self.scene = nil
+	self.scope = nil
 end
 
 function MainMenu.Start(self, Scope: Fusion.Scope<any>, scene)
+	if scene == nil then
+		return
+	end
+
 	self.scene = scene
-	MainMenu.DrawTabCenter(Scope, { Parent = scene })
+	MainMenu:DrawTabCenter(Scope, { Parent = scene })
 end
 
-function MainMenu.Stop(self, Scope: Fusion.Scope<any>)
+function MainMenu.Stop(self)
 	local scene = self.scene
 	if scene == nil then
 		return
 	end
 
-	self.scene:Destroy()
-	Scope:doCleanup()
+	--self.scene:Destroy()
+	self.scope:doCleanup()
 end
 
-function MainMenu.DrawTabCenter(Scope: Fusion.Scope<any>, Props)
+function MainMenu.DrawTabCenter(self, Scope: Fusion.Scope<any>, Props)
 	local Scope = InnerScope(Scope, Fusion, IComponents, MenuComponents)
 	local Theme = Themer.Theme:now()
 
-	Scope:Document {
+	self.scope = Scope
+
+	return Scope:Document {
 		Size = Theme.ObjectSize.FitToScale,
 		Parent = Props.Parent,
 
